@@ -140,6 +140,23 @@ require('lazy').setup({
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
   },
+  {
+    'kosayoda/nvim-lightbulb',
+    dependencies = {
+      'antoinemadec/FixCursorHold.nvim'
+    },
+    config = function()
+      require('nvim-lightbulb').setup({
+        autocmd = {
+          enabled = true,
+          float = {
+            enabled = true,
+            text = "c"
+          }
+        }
+      })
+    end,
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -147,24 +164,7 @@ require('lazy').setup({
   require 'kickstart.plugins.autoformat',
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.harpoon',
-  {
-    'chipsenkbeil/distant.nvim',
-    config = function()
-      require('distant').setup {
-        -- Applies Chip's personal settings to every machine you connect to
-        --
-        -- 1. Ensures that distant servers terminate with no connections
-        -- 2. Provides navigation bindings for remote directories
-        -- 3. Provides keybinding to jump into a remote file's parent directory
-        --        ['*'] = require('distant.settings').chip_default(),
-        ['192.168.178.72'] = {
-          distant = {
-            bin = '/home/me/bin/distant',
-          },
-        },
-      }
-    end
-  },
+  require 'kickstart.plugins.distant',
   -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
   --    up-to-date with whatever is in the kickstart repo.
