@@ -28,33 +28,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
-  "theprimeagen/harpoon",
-  {
-    'chipsenkbeil/distant.nvim',
-    config = function()
-      require('distant').setup {
-        -- Applies Chip's personal settings to every machine you connect to
-        --
-        -- 1. Ensures that distant servers terminate with no connections
-        -- 2. Provides navigation bindings for remote directories
-        -- 3. Provides keybinding to jump into a remote file's parent directory
-        --        ['*'] = require('distant.settings').chip_default(),
-        ['192.168.178.72'] = {
-          distant = {
-            bin = '/home/me/bin/distant',
-          },
-        },
-      }
-    end
-    --    config = function()
-    --        -- Applies Chip's personal settings to every machine you connect to
-    --        --
-    -- 1. Ensures that distant servers terminate with no connections
-    -- 2. Provides navigation bindings for remote directories
-    -- 3. Provides keybinding to jump into a remote file's parent directory
-    --['*'] = require('distant.settings').chip_default()
-    -- end,
-  },
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -173,7 +146,25 @@ require('lazy').setup({
   --       Uncomment any of the lines below to enable them.
   require 'kickstart.plugins.autoformat',
   require 'kickstart.plugins.debug',
-
+  require 'kickstart.plugins.harpoon',
+  {
+    'chipsenkbeil/distant.nvim',
+    config = function()
+      require('distant').setup {
+        -- Applies Chip's personal settings to every machine you connect to
+        --
+        -- 1. Ensures that distant servers terminate with no connections
+        -- 2. Provides navigation bindings for remote directories
+        -- 3. Provides keybinding to jump into a remote file's parent directory
+        --        ['*'] = require('distant.settings').chip_default(),
+        ['192.168.178.72'] = {
+          distant = {
+            bin = '/home/me/bin/distant',
+          },
+        },
+      }
+    end
+  },
   -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
   --    up-to-date with whatever is in the kickstart repo.
@@ -427,7 +418,6 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Setup mason so it can manage external tooling
 require('mason').setup()
-
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
 
