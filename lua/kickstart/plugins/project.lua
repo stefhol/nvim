@@ -2,7 +2,7 @@ return {
   {
     "natecraddock/workspaces.nvim",
     dependencies = {
-      'telescope'
+      'nvim-telescope/telescope.nvim'
     },
     config = function()
       require("workspaces").setup({
