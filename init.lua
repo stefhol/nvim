@@ -3,7 +3,6 @@
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -17,6 +16,14 @@ if not vim.loop.fs_stat(lazypath) then
     '--branch=stable', -- latest stable release
     lazypath,
   }
+end
+-- Tabnine build string generater
+local function get_tabnine_build_string()
+  if (vim.fn.has('win32')) then
+    return "pwsh.exe -file .\\dl_binaries.ps1"
+  else
+    return "./dl_binaries.sh"
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
@@ -33,6 +40,21 @@ require('lazy').setup({
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+  -- Tabnine Ai
+  {
+    'codota/tabnine-nvim',
+    build = get_tabnine_build_string(),
+    config = function()
+      require('tabnine').setup({
+        disable_auto_comment = true,
+        accept_keymap = "<Tab>",
+        dismiss_keymap = "<C-]>",
+        debounce_ms = 800,
+        suggestion_color = { gui = "#808080", cterm = 244 },
+        exclude_filetypes = { "TelescopePrompt" }
+      })
+    end,
+  },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -97,6 +119,19 @@ require('lazy').setup({
         section_separators = '',
       },
     },
+    config = function()
+      require('lualine').setup({
+        tabline = {
+          lualine_a = {},
+          lualine_b = { 'branch' },
+          lualine_c = { 'filename' },
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {}
+        },
+        sections = { lualine_c = { 'lsp_progress' }, lualine_x = { 'tabnine' } }
+      })
+    end,
   },
 
   {
@@ -156,7 +191,15 @@ require('lazy').setup({
       })
     end,
   },
-
+  {
+    "kylechui/nvim-surround",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
