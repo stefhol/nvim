@@ -19,7 +19,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 -- Tabnine build string generater
 local function get_tabnine_build_string()
-  if (vim.fn.has('win32')) then
+  if (vim.fn.has('win32') == 1) then
     return "pwsh.exe -file .\\dl_binaries.ps1"
   else
     return "./dl_binaries.sh"
