@@ -19,7 +19,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- 'leoluz/nvim-dap-go',
   },
   config = function()
     local dap = require 'dap'
@@ -34,15 +34,12 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        -- 'delve',
       },
     }
 
     -- You can provide additional configuration to the handlers,
     -- see mason-nvim-dap README for more information
-    require('mason-nvim-dap').setup({
-      -- automatic_setup = true,
-    })
     -- require('mason-nvim-dap').setup_handlers()
 
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -81,7 +78,7 @@ return {
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
-    require('dap-go').setup()
+    -- require('dap-go').setup()
     -- dap.adapters.codelldb = {
     --   type = 'server',
     --   port = "13203",
@@ -93,52 +90,13 @@ return {
     --     -- detached = false,
     --   }
     -- }
-    --  dap.configurations.cpp = {
-    --   {
-    --     name = "Launch file",
-    --     type = "codelldb",
-    --     request = "launch",
-    --     program = function()
-    --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug', 'file')
-    --     end,
-    --     cwd = '${workspaceFolder}',
-    --     stopOnEntry = false,
-    --   },
-    -- }
-    -- dap.configurations.c = dap.configurations.cpp
-    -- dap.configurations.rust = dap.configurations.cpp
-    -- dap.adapters.chrome = {
-    --   type = "executable",
-    --   command = "node",
-    --   args = { os.getenv("HOME") .. "$HOME/.config/vscode-chrome-debug/out/src/chromeDebug.js" } -- TODO adjust
-    -- }
-
-    -- dap.configurations.javascriptreact = { -- change this to javascript if needed
-    --   {
-    --     type = "chrome",
-    --     request = "attach",
-    --     program = "${file}",
-    --     cwd = vim.fn.getcwd(),
-    --     sourceMaps = true,
-    --     protocol = "inspector",
-    --     port = 9222,
-    --     webRoot = "${workspaceFolder}"
-    --   }
-    -- }
-
-    -- dap.configurations.typescriptreact = { -- change to typescript if needed
-    --   {
-    --     type = "chrome",
-    --     request = "attach",
-    --     program = "${file}",
-    --     cwd = vim.fn.getcwd(),
-    --     sourceMaps = true,
-    --     protocol = "inspector",
-    --     port = 9222,
-    --     webRoot = "${workspaceFolder}"
-    --   }
-    -- }
-
-    require('dap.ext.vscode').load_launchjs(nil, { lldb = { 'rust' } })
   end,
+  load_vscode_config = function()
+    require('dap.ext.vscode').load_launchjs(nil, {
+      lldb = { 'rust' },
+      chrome = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
+      -- edge = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
+      -- firefox = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
+    })
+  end
 }
