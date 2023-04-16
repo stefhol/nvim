@@ -28,7 +28,6 @@ return {
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
-      automatic_setup = true,
 
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
@@ -36,6 +35,37 @@ return {
         -- Update this to ensure that you have the debuggers for the langs you want
         -- 'delve',
       },
+      -- handlers = {
+      --   function(config) -- all sources with no handler get passed here
+      --
+      --     -- Keep original functionality
+      --     require('mason-nvim-dap').default_setup(config)
+      --   end,
+      --   python = function(config)
+      --     config.adapters = {
+      --       type = "executable",
+      --       command = "/usr/bin/python3",
+      --       args = {
+      --         "-m",
+      --         "debugpy.adapter",
+      --       },
+      --     }
+      --     require('mason-nvim-dap').default_setup(config) -- don't forget this!
+      --   end,
+      --   codelldb = function(config)
+      --     config.adapters = {
+      --       type = 'server',
+      --       port = '${port}',
+      --       executable = {
+      --         command = vim.fn.exepath('codelldb'),
+      --         args = { '--port', '${port}' },
+      --       },
+      --     }
+      --     require('mason-nvim-dap').default_setup(config) -- don't forget this!
+      --   end
+      -- },
+      handlers = {},
+      automatic_installation = true,
     }
 
     -- You can provide additional configuration to the handlers,
@@ -92,8 +122,10 @@ return {
     -- }
   end,
   load_vscode_config = function()
+    require('dap').configurations = {}
     require('dap.ext.vscode').load_launchjs(nil, {
       lldb = { 'rust' },
+      codelldb = { 'rust' },
       chrome = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
       -- edge = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
       -- firefox = { 'typescriptreact', 'typescript', 'javascriptreact', 'javascript' },
