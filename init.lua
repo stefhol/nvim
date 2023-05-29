@@ -205,6 +205,15 @@ require('lazy').setup({
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
   },
+
+  {
+    "folke/trouble.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -287,15 +296,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+local actions = require("telescope.actions")
+local trouble = require("trouble.providers.telescope")
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
+        ["<c-t>"] = trouble.open_with_trouble,
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
+      n = { ["<c-t>"] = trouble.open_with_trouble },
     },
   },
 }
