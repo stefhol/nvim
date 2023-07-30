@@ -506,6 +506,7 @@ local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
 luasnip.config.setup {}
+require("luasnip.loaders.from_snipmate").lazy_load()
 
 cmp.setup {
   snippet = {
