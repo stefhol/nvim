@@ -170,6 +170,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
@@ -341,6 +342,10 @@ require('nvim-treesitter.configs').setup {
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
+  -- For commenting with the JoosepAlviste/nvim-ts-context-commentstring
+  context_commentstring = {
+    enable = true,
+  },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
