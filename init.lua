@@ -20,9 +20,11 @@ end
 -- Tabnine build string generater
 local function get_tabnine_build_string()
   if (vim.fn.has('win32') == 1) then
-    return "pwsh.exe -file .\\dl_binaries.ps1"
+    return 'powershell ./install.ps1'
+    -- return "pwsh.exe -file .\\dl_binaries.ps1"
   else
-    return "./dl_binaries.sh"
+    return "./install.sh"
+    -- return "./dl_binaries.sh"
   end
 end
 vim.opt.rtp:prepend(lazypath)
@@ -42,19 +44,11 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'mg979/vim-visual-multi',
   -- Tabnine Ai
+
   {
-    'codota/tabnine-nvim',
-    build = get_tabnine_build_string(),
-    config = function()
-      require('tabnine').setup({
-        disable_auto_comment = true,
-        accept_keymap = "<Tab>",
-        dismiss_keymap = "<C-]>",
-        debounce_ms = 800,
-        suggestion_color = { gui = "#808080", cterm = 244 },
-        exclude_filetypes = { "TelescopePrompt" }
-      })
-    end,
+    'tzachar/cmp-tabnine',
+    build = './install.sh',
+    dependencies = 'hrsh7th/nvim-cmp',
   },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -543,6 +537,7 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'cmp_tabnine' },
     { name = 'luasnip' },
   },
 }
