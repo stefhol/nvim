@@ -69,7 +69,10 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
-
+  {
+    "L3MON4D3/LuaSnip",
+    run = "make install_jsregexp"
+  },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -501,7 +504,6 @@ local luasnip = require 'luasnip'
 
 luasnip.config.setup {}
 require("luasnip.loaders.from_snipmate").lazy_load()
-
 cmp.setup {
   snippet = {
     expand = function(args)
