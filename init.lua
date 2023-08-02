@@ -20,7 +20,7 @@ end
 -- Tabnine build string generater
 local function get_tabnine_build_string()
   if (vim.fn.has('win32') == 1) then
-    return 'powershell ./install.ps1'
+    return 'pwsh.exe ./install.ps1'
     -- return "pwsh.exe -file .\\dl_binaries.ps1"
   else
     return "./install.sh"
@@ -47,7 +47,7 @@ require('lazy').setup({
 
   {
     'tzachar/cmp-tabnine',
-    build = './install.sh',
+    build = get_tabnine_build_string(),
     dependencies = 'hrsh7th/nvim-cmp',
   },
 
@@ -405,7 +405,9 @@ require('nvim-treesitter.configs').setup {
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set("n", "<leader>q", function() require("trouble").open("document_diagnostics") end,
+  { desc = "Open diagnostics list" })
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
@@ -428,7 +430,10 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+
+  -- nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap("gr", function() require("trouble").open("lsp_references") end, '[G]oto [R]eferences')
+
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
