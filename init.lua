@@ -59,7 +59,7 @@ require('lazy').setup({
       require('treesj').setup({
         use_default_keymaps = false
       })
-      vim.keymap.set('n', '<leader>m', require('treesj').toggle, { desc = "Toggle node between split and join" })
+      vim.keymap.set('n', '<leader>n', require('treesj').toggle, { desc = "Toggle node between split and join" })
     end,
   },
   -- Diffview
