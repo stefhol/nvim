@@ -51,6 +51,17 @@ require('lazy').setup({
     dependencies = 'hrsh7th/nvim-cmp',
   },
   'windwp/nvim-ts-autotag',
+  {
+    'Wansmer/treesj',
+    keys = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('treesj').setup({
+        use_default_keymaps = false
+      })
+      vim.keymap.set('n', '<leader>m', require('treesj').toggle, { desc = "Toggle node between split and join" })
+    end,
+  },
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
