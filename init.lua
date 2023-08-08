@@ -77,6 +77,13 @@ require('lazy').setup({
     run = "make install_jsregexp"
   },
   {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*"
+  },
+  {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -411,6 +418,11 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+--Neogen Comments keymaps
+vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require('neogen').generate()<CR>",
+  { noremap = true, silent = true, desc = "Generate comment" })
+-- Oil keymaps
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
