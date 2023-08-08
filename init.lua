@@ -50,6 +50,7 @@ require('lazy').setup({
     build = get_tabnine_build_string(),
     dependencies = 'hrsh7th/nvim-cmp',
   },
+  'windwp/nvim-ts-autotag',
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -354,6 +355,10 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  --nvim-ts-autotag
+  autotag = {
+    enable = true
+  },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
