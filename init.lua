@@ -62,6 +62,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>m', require('treesj').toggle, { desc = "Toggle node between split and join" })
     end,
   },
+  -- Diffview
+  "sindrets/diffview.nvim",
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
