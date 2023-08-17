@@ -155,7 +155,11 @@ require('lazy').setup({
       },
     },
   },
-
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+  },
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -164,7 +168,6 @@ require('lazy').setup({
       vim.cmd.colorscheme 'onedark'
     end,
   },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -395,7 +398,11 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = {
+    'c', 'cpp', 'go', 'rust', 'tsx', 'astro', 'css', 'glimmer', 'graphql',
+    'html', 'javascript', 'lua', 'nix', 'php', 'python',
+    'scss', 'svelte', 'twig', 'typescript', 'vim', 'vue',
+  },
   --nvim-ts-autotag
   autotag = {
     enable = true
