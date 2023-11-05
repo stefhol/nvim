@@ -50,6 +50,10 @@ require('lazy').setup({
     build = get_tabnine_build_string(),
     dependencies = 'hrsh7th/nvim-cmp',
   },
+  {
+    "sourcegraph/sg.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   'windwp/nvim-ts-autotag',
   {
     'Wansmer/treesj',
