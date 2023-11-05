@@ -554,10 +554,16 @@ local servers = {
 
 -- Setup neovim lua configuration
 require('neodev').setup()
-
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities(
+  vim.lsp.protocol.make_client_capabilities()
+)
+-- Activate the new 0.9 Dynamic Registration feature for the lsp
+capabilities.workspace = {
+  didChangeWatchedFiles = {
+    dynamicRegistration = true
+  }
+}
 
 -- Setup mason so it can manage external tooling
 require('mason').setup()
