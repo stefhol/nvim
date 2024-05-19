@@ -12,14 +12,7 @@ return {
       local source = require "dbee.sources"
       require("dbee").setup {
         sources = {
-          source.MemorySource:new({
-            ---@diagnostic disable-next-line: missing-fields
-            {
-              type = "postgres",
-              name = "mixery",
-              url = "postgresql://tjdevries:password@localhost:5432/mixery",
-            },
-          }, "mixery"),
+          source.MemorySource:new(),
         },
       }
       require "custom.dbee"

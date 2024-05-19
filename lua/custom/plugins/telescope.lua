@@ -4,7 +4,6 @@ return {
     dependencies = {
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
       { "nvim-telescope/telescope-smart-history.nvim" },
-      { "kkharji/sqlite.lua" },
       { "nvim-lua/plenary.nvim" },
     },
     config = function()
