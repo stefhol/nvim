@@ -6,16 +6,16 @@ return {
     harpoon:setup()
 
     vim.keymap.set("n", "<leader>m", function()
-      harpoon:list():add()
+      require("harpoon.mark").add_file()
     end)
     vim.keymap.set("n", "<leader>h", function()
-      harpoon.ui:toggle_quick_menu(harpoon:list())
+      require("harpoon.ui").toggle_quick_menu()
     end)
 
     -- Set <space>1..<space>5 be my shortcuts to moving to the files
     for _, idx in ipairs { 1, 2, 3, 4, 5 } do
       vim.keymap.set("n", string.format("<space>%d", idx), function()
-        harpoon:list():select(idx)
+        require("harpoon.ui").nav_file(3)
       end)
     end
   end,
