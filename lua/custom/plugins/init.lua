@@ -13,6 +13,15 @@ return {
 
   -- Git related plugins
   "tpope/vim-fugitive",
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup {}
+    end,
+  },
+  -- git diffview
+  "sindrets/diffview.nvim",
+
   "tpope/vim-rhubarb",
 
   -- Detect tabstop and shiftwidth automatically
@@ -32,8 +41,6 @@ return {
       require("nvim-autopairs").setup {}
     end,
   },
-  -- git diffview
-  "sindrets/diffview.nvim",
   {
     "runih/colorscheme-picker.nvim",
     dependencies = {
