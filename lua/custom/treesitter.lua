@@ -5,9 +5,7 @@ local M = {}
 M.setup = function()
   local group = vim.api.nvim_create_augroup("custom-treesitter", { clear = true })
 
-  require("nvim-treesitter").setup {
-    ensure_install = "community",
-  }
+  require("nvim-treesitter").setup {}
 
   local syntax_on = {
     elixir = true,

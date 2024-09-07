@@ -53,8 +53,6 @@ set("n", "<M-k>", function()
 end)
 
 
--- Oil keymaps
-set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- Diagnostic keymaps
 set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
