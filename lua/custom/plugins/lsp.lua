@@ -14,7 +14,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "folke/neodev.nvim",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -28,13 +27,6 @@ return {
       "b0o/SchemaStore.nvim",
     },
     config = function()
-      require("neodev").setup {
-        -- library = {
-        --   plugins = { "nvim-dap-ui" },
-        --   types = true,
-        -- },
-      }
-
       local capabilities = nil
       if pcall(require, "cmp_nvim_lsp") then
         capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -51,7 +43,7 @@ return {
         cssls = {},
 
         -- Probably want to disable formatting for this lang server
-        tsserver = {},
+        ts_ls = {},
 
         jsonls = {
           settings = {
