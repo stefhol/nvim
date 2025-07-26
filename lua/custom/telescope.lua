@@ -1,14 +1,11 @@
 local data = assert(vim.fn.stdpath "data") --[[@as string]]
-local trouble = require "trouble.sources.telescope"
 require("telescope").setup {
   defaults = {
     mappings = {
       i = {
-        ["<c-t>"] = trouble.open,
         ["<C-u>"] = false,
         ["<C-d>"] = false,
       },
-      n = { ["<c-t>"] = trouble.open },
     },
   },
   extensions = {
@@ -60,7 +57,6 @@ end
 vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
-vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
 vim.keymap.set("n", "<leader>/", function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.

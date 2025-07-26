@@ -16,6 +16,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "saghen/blink.cmp",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
       { "j-hui/fidget.nvim", opts = {} },
@@ -27,11 +28,7 @@ return {
       "b0o/SchemaStore.nvim",
     },
     config = function()
-      local capabilities = nil
-      if pcall(require, "cmp_nvim_lsp") then
-        capabilities = require("cmp_nvim_lsp").default_capabilities()
-      end
-
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
       local lspconfig = require "lspconfig"
 
       local servers = {
@@ -94,9 +91,7 @@ return {
 
       require("mason").setup()
       local ensure_installed = {
-        "stylua",
         "lua_ls",
-        "eslint-lsp",
         -- "tailwind-language-server",
       }
 
@@ -118,6 +113,11 @@ return {
         lua = true,
       }
       require("mason-lspconfig").setup {
+        automatic_enable = {},
+        automatic_installation = {},
+        ensure_installed = {
+          "lua_ls",
+        },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -130,6 +130,7 @@ return {
         },
       }
       require "custom.vue"
+      vim.lsp.enable("jdtls", true)
 
       vim.api.nvim_create_autocmd("LspAttach", {
 
@@ -147,8 +148,6 @@ return {
           nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
           nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-          nmap("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
-          nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
           nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
           nmap("<leader>ds", vim.lsp.buf.document_symbol, "[D]ocument [S]ymbols")
           nmap("<leader>ws", vim.lsp.buf.workspace_symbol, "[W]orkspace [S]ymbols")

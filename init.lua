@@ -3,9 +3,8 @@
 --
 -- Primarily just download and execute lazy.nvim
 --]]
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -18,6 +17,10 @@ if not vim.uv.fs_stat(lazypath) then
     lazypath,
   }
 end
+
+vim.diagnostic.config {
+  virtual_lines = true,
+}
 
 -- Add lazy to the `runtimepath`, this allows us to `require` it.
 ---@diagnostic disable-next-line: undefined-field

@@ -8,12 +8,11 @@ return {
       require("workspaces").setup({
         hooks = {
           open = function()
-            require('kickstart.plugins.debug').load_vscode_config()
             require("telescope.builtin").find_files()
           end,
         }
       })
-      require('telescope').load_extension("workspaces")
+      require('telescope').load_extension "workspaces"
     end
   }
 }
