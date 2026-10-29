@@ -150,7 +150,30 @@ vim.o.splitbelow = true
 --   See `:help lua-options`
 --   and `:help lua-guide-options`
 vim.o.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.listchars = {
+  tab = "» ",
+  trail = "·",
+  nbsp = "␣",
+  leadmultispace = "·",
+  eol = "↲",
+  extends = "❯",
+  precedes = "❮",
+}
+
+-- Show the line-ending type at the end of each line (Windows/Unix/Mac)
+local eol_chars = { unix = "↲", dos = "␍", mac = "␊" }
+local function show_line_ending()
+  vim.opt.listchars:append({ eol = eol_chars[vim.bo.fileformat] or "↲" })
+end
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWinEnter", "FileType" }, {
+  callback = show_line_ending,
+  desc = "Show line-ending type via listchars.eol",
+})
+vim.api.nvim_create_autocmd("OptionSet", {
+  pattern = "fileformat",
+  callback = show_line_ending,
+  desc = "Update listchars.eol when 'fileformat' changes",
+})
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = "split"

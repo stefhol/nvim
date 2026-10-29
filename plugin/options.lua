@@ -20,10 +20,14 @@ opt.shada = { "'10", "<0", "s10", "h" }
 opt.nu = true
 opt.relativenumber = true
 
+-- Default to hard tabs; per-project .editorconfig overrides these
 opt.tabstop = 4
-opt.softtabstop = 4
+opt.softtabstop = -1
 opt.shiftwidth = 4
-opt.expandtab = true
+opt.expandtab = false
+
+-- Also detect classic Mac (CR-only) line endings, not just unix/dos
+opt.fileformats = { "unix", "dos", "mac" }
 
 opt.smartindent = true
 opt.wrap = true

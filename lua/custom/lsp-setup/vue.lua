@@ -2,13 +2,13 @@ local vue_language_server_path = vim.fn.expand "$MASON/packages"
   .. "/vue-language-server"
   .. "/node_modules/@vue/language-server"
 
-local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
 local vue_plugin = {
   name = "@vue/typescript-plugin",
   location = vue_language_server_path,
   languages = { "vue" },
   configNamespace = "typescript",
 }
+-- vtsls only handles Vue SFC; it is the TypeScript backend for vue_ls.
 local vtsls_config = {
   settings = {
     vtsls = {
@@ -19,22 +19,16 @@ local vtsls_config = {
       },
     },
   },
-  filetypes = tsserver_filetypes,
+  filetypes = { "vue" },
 }
 
+-- ts_ls handles React/TypeScript/JavaScript via its lspconfig defaults
+-- (filetypes: typescript, javascript, javascriptreact, typescriptreact).
 local vue_ls_config = {}
+
 vim.lsp.config("vtsls", vtsls_config)
+-- `ts_ls` uses lspconfig defaults; an explicit config call registers it.
+vim.lsp.config("ts_ls", {})
 vim.lsp.config("vue_ls", vue_ls_config)
 
--- TODO: do I need that?
---
--- local ts_ls_config = {
---   init_options = {
---     plugins = {
---       vue_plugin,
---     },
---   },
---   filetypes = tsserver_filetypes,
--- }
--- vim.lsp.config("ts_ls", ts_ls_config)
-vim.lsp.enable { "vtsls", "vue_ls" } -- If using `ts_ls` replace `vtsls` to `ts_ls`
+vim.lsp.enable { "vtsls", "vue_ls", "ts_ls" }

@@ -9,6 +9,11 @@ set("n", "<c-k>", "<c-w><c-k>")
 set("n", "<c-l>", "<c-w><c-l>")
 set("n", "<c-h>", "<c-w><c-h>")
 
+-- Toggle invisible/special characters on/off (list is on by default)
+set("n", "<leader>ul", function()
+  vim.o.list = not vim.o.list
+end, { desc = "Toggle [L]istchars" })
+
 set("n", "<leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
 set("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Execute the current file" })
 

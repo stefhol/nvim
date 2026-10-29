@@ -134,6 +134,10 @@ return {
 
         stylua = {}, -- Used to format Lua code
 
+        -- Helm (values.yaml / templates). The binary is installed manually
+        -- via `:MasonInstall helm_ls` (already installed in your setup).
+        helm_ls = {},
+
         -- Special Lua Config, as recommended by neovim help docs
         lua_ls = {
           on_init = function(client)
@@ -176,10 +180,9 @@ return {
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        -- You can add other tools here that you want Mason to install
-      })
+      -- Deliberately empty: we do NOT auto-install anything. LSP servers are
+      -- installed manually via `:MasonInstall <server>`.
+      local ensure_installed = {}
 
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
