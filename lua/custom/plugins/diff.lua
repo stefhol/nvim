@@ -149,6 +149,92 @@ return {
           },
         },
       })
+
+      -- DiffBandit review of the fugitive status-buffer entry under the cursor.
+      -- Each fugitive section means a different git comparison, so pick the
+      -- mode per section instead of relying on git.default_mode ("all" =
+      -- worktree vs HEAD, which hides the index).
+      local section_modes = {
+        Staged = "staged", -- index vs HEAD
+        Unstaged = "unstaged", -- worktree vs index
+        Untracked = "unstaged", -- worktree vs nothing
+      }
+
+      local function fugitive_section(lnum)
+        local lines = vim.api.nvim_buf_get_lines(0, 0, lnum - 1, false)
+        for i = #lines, 1, -1 do
+          local heading = lines[i]:match("^(%u%l+)%s*%(%d+%+?%)$") or lines[i]:match("^(%u%l+)$")
+          if heading then
+            return heading
+          end
+        end
+      end
+
+      local function fugitive_work_tree()
+        local status = vim.b.fugitive_status
+        if type(status) == "table" and type(status.work_tree) == "string" and status.work_tree ~= "" then
+          return status.work_tree
+        end
+        local ok_repo, repo = pcall(vim.fn["fugitive#repo"])
+        if ok_repo then
+          local ok_tree, tree = pcall(function()
+            return repo.tree()
+          end)
+          if ok_tree and type(tree) == "string" and tree ~= "" then
+            return tree
+          end
+        end
+        return vim.fn.getcwd()
+      end
+
+      -- Fugitive's own porcelain parser resolves the cursor line to a real
+      -- path (renames, deletes, staged/unstaged, untracked). It returns an
+      -- fnameescape()d string, so unescape it before diffbandit sees it.
+      local function fugitive_target()
+        local ok, cfile = pcall(vim.fn["fugitive#PorcelainCfile"])
+        local path = ok and type(cfile) == "string" and cfile ~= "" and (cfile:gsub("\\(.)", "%1")) or nil
+        if not path or path:sub(1, 1) ~= "/" then
+          return nil
+        end
+        local stat = (vim.uv or vim.loop).fs_stat(path)
+        return {
+          path = path,
+          mode = section_modes[fugitive_section(vim.api.nvim_win_get_cursor(0)[1]) or ""],
+          is_dir = path:sub(-1) == "/" or (stat ~= nil and stat.type == "directory"),
+        }
+      end
+
+      local function diffbandit_under_cursor()
+        local diffbandit = require("diffbandit")
+        local target = fugitive_target()
+        local session, err
+
+        if not target then
+          -- Not on a file entry (section heading, commit, blank line).
+          session, err = diffbandit.git_panel({ root = fugitive_work_tree() })
+        elseif target.is_dir then
+          -- "? pitch/": git expands the pathspec to the files inside, so open
+          -- with the file panel instead of silently showing just the first.
+          session, err = diffbandit.git_panel({ scope = "current", path = target.path, mode = target.mode })
+        else
+          session, err = diffbandit.git_file(target.path, { mode = target.mode })
+        end
+
+        if not session then
+          vim.notify("diffbandit: " .. (err or "nothing to show"), vim.log.levels.WARN)
+        end
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "fugitive",
+        group = vim.api.nvim_create_augroup("custom_diffbandit_fugitive", { clear = true }),
+        callback = function(event)
+          vim.keymap.set("n", "<leader>gd", diffbandit_under_cursor, {
+            buffer = event.buf,
+            desc = "DiffBandit: diff entry under cursor",
+          })
+        end,
+      })
     end,
   }
 }
