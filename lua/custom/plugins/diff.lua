@@ -1,6 +1,8 @@
 return {
   {
     "CoreyKaylor/diffbandit.nvim",
+    --branch = 'fix/wrap-line-numbers',
+    branch = 'main',
     config = function()
       require("diffbandit").setup({
         diff = {
@@ -155,8 +157,8 @@ return {
       -- mode per section instead of relying on git.default_mode ("all" =
       -- worktree vs HEAD, which hides the index).
       local section_modes = {
-        Staged = "staged", -- index vs HEAD
-        Unstaged = "unstaged", -- worktree vs index
+        Staged = "staged",      -- index vs HEAD
+        Unstaged = "unstaged",  -- worktree vs index
         Untracked = "unstaged", -- worktree vs nothing
       }
 
@@ -204,6 +206,15 @@ return {
         }
       end
 
+      -- A conflicted path has no index stage 0, so git_file() can only render
+      -- "Unmerged file: resolve conflicts outside DiffBandit". The three-pane
+      -- resolver is a separate entry point (diffbandit.merge), and it is the
+      -- only one that can write the result and `git add` it on :w.
+      local function is_unmerged(root, path)
+        local out = vim.fn.systemlist({ "git", "-C", root, "ls-files", "--unmerged", "--", path })
+        return vim.v.shell_error == 0 and #out > 0
+      end
+
       local function diffbandit_under_cursor()
         local diffbandit = require("diffbandit")
         local target = fugitive_target()
@@ -216,6 +227,10 @@ return {
           -- "? pitch/": git expands the pathspec to the files inside, so open
           -- with the file panel instead of silently showing just the first.
           session, err = diffbandit.git_panel({ scope = "current", path = target.path, mode = target.mode })
+        elseif is_unmerged(fugitive_work_tree(), target.path) then
+          -- Fugitive lists a conflicted file under both Unstaged and Staged;
+          -- the section mode is meaningless here, so ignore it.
+          session, err = diffbandit.merge(target.path)
         else
           session, err = diffbandit.git_file(target.path, { mode = target.mode })
         end
